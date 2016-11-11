@@ -24,6 +24,10 @@ var HeroService = (function () {
         }) // delay the promise for 2 secs
             .then(function () { return _this.getHeroes(); });
     };
+    HeroService.prototype.getHero = function (id) {
+        return this.getHeroes()
+            .then(function (heroes) { return heroes.find(function (hero) { return hero.id === id; }); });
+    };
     HeroService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])
