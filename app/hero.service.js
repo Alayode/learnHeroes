@@ -16,6 +16,14 @@ var HeroService = (function () {
     HeroService.prototype.getHeroes = function () {
         return Promise.resolve(mock_heroes_1.HEROES);
     };
+    //Import the Hero Symbol and add the following getHeroesSlowly method to the HeroService
+    HeroService.prototype.getHeroesSlowly = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            return setTimeout(resolve, 2000);
+        }) // delay the promise for 2 secs
+            .then(function () { return _this.getHeroes(); });
+    };
     HeroService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])
