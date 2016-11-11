@@ -8,14 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+//angular OotB Modules
 var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
+//The Angular Router is an external, optional Angular NgModules called RouterModule.
+var router_1 = require('@angular/router');
+//project components
 var app_component_1 = require('./app.component');
 var heroes_component_1 = require('./heroes.component');
 var hero_detail_component_1 = require('./hero-detail.component');
+var dashboard_component_1 = require('./dashboard.component');
 //services
 var hero_service_1 = require('./hero.service');
+//The routes are an array of route definitions . We have only one route definition at the moment
+//but rest assured, we'll add more.
+//path : the router matches this route's path to the URL in the browser address bar ( heroes ).
+//component: the compoennt that the router should create when navigating to this route ( HeroesComponent )
+// the forRoot method is used for configured router at the root of the app.
+//for clarity lets add the route configuration outside the Ngmodule
 var AppModule = (function () {
     function AppModule() {
     }
@@ -23,12 +34,27 @@ var AppModule = (function () {
         core_1.NgModule({
             imports: [
                 platform_browser_1.BrowserModule,
-                forms_1.FormsModule
+                forms_1.FormsModule,
+                router_1.RouterModule.forRoot([
+                    {
+                        path: 'heroes',
+                        component: heroes_component_1.HeroesComponent
+                    },
+                    {
+                        path: 'dashboard',
+                        component: dashboard_component_1.DashboardComponent
+                    },
+                    {
+                        path: 'detail/:id',
+                        component: hero_detail_component_1.HeroDetailComponent
+                    }
+                ])
             ],
             declarations: [
                 app_component_1.AppComponent,
-                heroes_component_1.HeroesComponent,
-                hero_detail_component_1.HeroDetailComponent
+                dashboard_component_1.DashboardComponent,
+                hero_detail_component_1.HeroDetailComponent,
+                heroes_component_1.HeroesComponent
             ],
             providers: [
                 hero_service_1.HeroService
