@@ -30,6 +30,18 @@ export class HeroesComponent implements OnInit {
         this.selectedHero = hero;
     }
 
+    //In response to a click event , we call the click handler
+    add(name: string): void {
+        name = name.trim();
+        if (!name) { return; }
+        this.heroService.create(name)
+            .then(hero => {
+                this.heroes.push(hero);
+                this.selectedHero = null;
+            });
+    }
+
+
     gotoDetail(): void {
         this.router.navigate(['/detail', this.selectedHero.id]);
     }
