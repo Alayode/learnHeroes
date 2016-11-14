@@ -22,7 +22,7 @@ export class HeroService {
     //     // return Promise.resolve(HEROES)
     // }
 
-    getHeroes():promise<Hero[]> {
+    getHeroes():Promise<Hero[]> {
 
         return this.http.get(this.heroesUrl)
             .toPromise()
