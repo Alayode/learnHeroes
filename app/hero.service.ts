@@ -15,6 +15,22 @@ export class HeroService {
         return Promise.reject(error.message || error);
     }
 
+    //create our headers
+    private headers = new Headers({'Content-Type': 'application/json'});
+
+    //create our update method
+    update(hero: Hero): Promise<Hero> {
+        const url = `${this.heroesUrl}/${hero.id}`;
+        return this.http
+            .put(url, JSON.stringify(hero), {headers: this.headers})
+            .toPromise()
+            .then(() => hero)
+            .catch(this.handleError);
+    }
+
+    //create our delete method
+
+
     constructor(private http:Http) {}
 
     //
@@ -45,5 +61,14 @@ export class HeroService {
             .then(heroes => heroes.find(hero => hero.id === id));
     }
 
+    // create a method in the HeroService class
+    create(name: string): Promise<Hero> {
+        return this.http
+            .post(this.heroesUrl, JSON.stringify({name:name}),
+        {headers: this.headers})
+            .toPromise()
+            .then ( res => res.json().data)
+            .catch(this.handleError);
+    }
 
 }
