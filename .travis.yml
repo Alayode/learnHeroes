@@ -16,4 +16,3 @@ install:
   - npm install
   - npm run tsc
 script:
-  
