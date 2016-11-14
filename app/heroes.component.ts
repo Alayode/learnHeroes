@@ -1,18 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
-import { Observable }        from 'rxjs/Observable';
-import { Subject }           from 'rxjs/Subject';
-import { HeroSearchService } from './hero-search.service';
-import { Hero } from './hero';
-@Component({
-    moduleId: module.id,
-    selector: 'hero-search',
-    templateUrl: 'hero-search.component.html',
-    styleUrls: [ 'hero-search.component.css' ],
-    providers: [HeroSearchService]
-})
-import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
 import { Hero }                from './hero';
 import { HeroService }         from './hero.service';
 @Component({
