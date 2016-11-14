@@ -10,48 +10,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var hero_service_1 = require('./hero.service');
-var HeroesComponent = (function () {
-    function HeroesComponent(router, heroService) {
+var Observable_1 = require('rxjs/Observable');
+var Subject_1 = require('rxjs/Subject');
+var hero_search_service_1 = require('./hero-search.service');
+var HeroSearchComponent = (function () {
+    function HeroSearchComponent(heroSearchService, router) {
+        this.heroSearchService = heroSearchService;
         this.router = router;
-        this.heroService = heroService;
+        this.searchTerms = new Subject_1.Subject();
     }
-    HeroesComponent.prototype.getHeroes = function () {
+    // Push a search term into the observable stream.
+    HeroSearchComponent.prototype.search = function (term) {
+        this.searchTerms.next(term);
+    };
+    HeroSearchComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
-    };
-    HeroesComponent.prototype.ngOnInit = function () {
-        this.getHeroes();
-    };
-    HeroesComponent.prototype.onSelect = function (hero) {
-        this.selectedHero = hero;
-    };
-    //In response to a click event , we call the click handler
-    HeroesComponent.prototype.add = function (name) {
-        var _this = this;
-        name = name.trim();
-        if (!name) {
-            return;
-        }
-        this.heroService.create(name)
-            .then(function (hero) {
-            _this.heroes.push(hero);
-            _this.selectedHero = null;
+        this.heroes = this.searchTerms
+            .debounceTime(300) // wait for 300ms pause in events
+            .distinctUntilChanged() // ignore if next search term is same as previous
+            .switchMap(function (term) { return term // switch to new observable each time
+            ? _this.heroSearchService.search(term)
+            : Observable_1.Observable.of([]); })
+            .catch(function (error) {
+            // TODO: real error handling
+            console.log(error);
+            return Observable_1.Observable.of([]);
         });
     };
-    HeroesComponent.prototype.gotoDetail = function () {
-        this.router.navigate(['/detail', this.selectedHero.id]);
+    HeroSearchComponent.prototype.gotoDetail = function (hero) {
+        var link = ['/detail', hero.id];
+        this.router.navigate(link);
     };
-    HeroesComponent = __decorate([
+    HeroSearchComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'my-heroes',
-            templateUrl: 'heroes.component.html',
-            styleUrls: ['heroes.component.css']
+            selector: 'hero-search',
+            templateUrl: 'hero-search.component.html',
+            styleUrls: ['hero-search.component.css'],
+            providers: [hero_search_service_1.HeroSearchService]
         }), 
-        __metadata('design:paramtypes', [router_1.Router, hero_service_1.HeroService])
-    ], HeroesComponent);
-    return HeroesComponent;
+        __metadata('design:paramtypes', [hero_search_service_1.HeroSearchService, router_1.Router])
+    ], HeroSearchComponent);
+    return HeroSearchComponent;
 }());
-exports.HeroesComponent = HeroesComponent;
+exports.HeroSearchComponent = HeroSearchComponent;
 //# sourceMappingURL=heroes.component.js.map
